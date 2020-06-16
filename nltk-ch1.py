@@ -30,8 +30,24 @@ FreqDist(sometext): creates a frequency distribution of all distinct tokens in t
 somefreqdist.most_common(some number n): lists the n most common tokens and their counts in the 
 	frequency distribution, from most to least frequent
 
-somefreqdist[some token]: retrieves the frequency associated with the token in the frequency distribution
+somefreqdist[some token]: retrieves the frequency by count associated with the token in the frequency distribution
 	(kind of like a dictionary key)
+
+somefreqdist.freq("some word"): returns frequency of a given sample (proportion)
+
+somefreqdist.N(): returns total number of samples (basically the len function)
+
+somefreqdist.max(): returns sample with the greatest count/frequency, essentially the key of the max value 
+
+somefreqdist.tabulate(): tabulates the frequency distribution
+
+somefreqdist.plot(): displays graphical plot of the frequency distribution
+
+somefreqdist.plot(cumulative=True)	cumulative plot of the frequency distribution
+
+somefreqdist1 |= somefreqdist2: update somefreqdist1 with counts of that in somefreqdist2
+
+somefreqdist1 < somefreqdist2: boolean, true if samples in somefreqdist1 occur less frequently than in somefreqdist2
 
 bigrams(list of tokens): generator function for the list of tokens, which yields the tokens in pairs
 	with the token one index greater
