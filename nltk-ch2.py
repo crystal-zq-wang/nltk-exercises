@@ -112,11 +112,47 @@ cfd = nltk.ConditionalFreqDist(
      	for genre in brown.categories()
      	for word in brown.words(categories=genre)
      	if genre in ["romance", "news"])
-cfd.tabulate(samples=days)
->>> 		Monday   Tuesday Wednesday  Thursday    Friday  Saturday    Sunday 
+>>> cfd.tabulate(samples=days)
+ 			Monday   Tuesday Wednesday  Thursday    Friday  Saturday    Sunday 
    news        54        43        22        20        41        33        51 
 romance         2         3         3         1         3         4         5 
 
-## will continue starting from section 2.4
+### example from text on generating random text with bigrams ###
+def generate_model(cfdist, word, num=15):
+    for i in range(num):
+        print(word, end=' ')
+        word = cfdist[word].max()
 
+text = nltk.corpus.genesis.words('english-kjv.txt')
+bigrams = nltk.bigrams(text)
+cfd = nltk.ConditionalFreqDist(bigrams) 
+>>> cfd['living']
+FreqDist({'creature': 7, 'thing': 4, 'substance': 2, ',': 1, '.': 1, 'soul': 1})
+>>> generate_model(cfd, 'living')
+living creature that he said , and the land of the land of the land
+# basically, we get a conditional frequency distribution of bigrams so we can see which word pairs occur frequently
+# then the function will reset the context word (starting with seed word) every time = predictive text
 
+# symbols in the CMU Pronouncing Dictionary are from the Arpabet
+# Swadesh wordlists: lists of about 200 common words in several languages. Access like below:
+from nltk.corpus import swadesh
+>>> swadesh.fileids()
+['be', 'bg', 'bs', 'ca', 'cs', 'cu', 'de', 'en', 'es', 'fr', 'hr', 'it', 'la', 'mk',
+'nl', 'pl', 'pt', 'ro', 'ru', 'sk', 'sl', 'sr', 'sw', 'uk']
+# can create a simple dictionary for these words
+>>> fr2en = swadesh.entries(['fr', 'en'])
+>>> fr2en
+[('je', 'I'), ('tu, vous', 'you (singular), thou'), ('il', 'he'), ...]
+>>> translate = dict(fr2en)
+>>> translate['chien']
+'dog'
+>>> translate['jeter']
+'throw'
+>>> de2en = swadesh.entries(['de', 'en'])    # German-English
+>>> es2en = swadesh.entries(['es', 'en'])    # Spanish-English
+>>> translate.update(dict(de2en)) # this is basically just adding onto the previous translate dictionary with french in it
+>>> translate.update(dict(es2en))
+>>> translate['Hund']
+'dog'
+>>> translate['perro']
+'dog'
